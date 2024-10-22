@@ -42,6 +42,13 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Copie configurações personalizadas do PHP
 COPY docker/php/custom.ini /usr/local/etc/php/conf.d/custom.ini
 
+# Criar a pasta de logs e os arquivos error.log e access.log
+RUN mkdir -p /var/www/docker/nginx/log \
+    && touch /var/www/docker/nginx/log/error.log /var/www/docker/nginx/log/access.log
+
+# Defina permissões adequadas para a pasta de logs
+RUN chmod -R 775 /var/www/docker/nginx/log
+
 # Defina o diretório de trabalho padrão
 WORKDIR /var/www
 
