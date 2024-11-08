@@ -18,7 +18,7 @@ services:
     app:
         build:
             context: .
-            dockerfile: docker/Dockerfile
+            dockerfile: Dockerfile
         container_name: reservation_management_app
         working_dir: /var/www/
         volumes:
