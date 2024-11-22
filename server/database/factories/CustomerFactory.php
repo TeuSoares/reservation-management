@@ -2,13 +2,16 @@
 
 namespace Database\Factories;
 
+use App\Infrastructure\Persistence\Models\Customer;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Customer>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Infrastructure\Persistence\Models>
  */
 class CustomerFactory extends Factory
 {
+    protected $model = Customer::class;
+
     public function definition(): array
     {
         return [
