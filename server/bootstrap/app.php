@@ -1,8 +1,11 @@
 <?php
 
+use App\Support\HttpResponse;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -15,5 +18,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->statefulApi();
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        $exceptions->renderable(function (NotFoundHttpException $exception) {
+            return HttpResponse::error(['not_found' => $exception->getMessage()], 404);
+        });
+
+        $exceptions->renderable(function (QueryException $e) {
+            return HttpResponse::error(['query' => 'An error occurred while trying to communicate with the database. Please try again'], 500);
+        });
     })->create();
