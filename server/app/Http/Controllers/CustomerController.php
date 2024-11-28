@@ -4,31 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Core\UseCases\Customer\GetAllCustomers;
 use App\Core\UseCases\Customer\GetCustomerById;
-use App\Support\Traits\HttpResponse;
+use App\Support\HttpResponse;
 use Illuminate\Http\JsonResponse;
 
 class CustomerController extends Controller
 {
-    use HttpResponse;
-
     public function __construct(
         private GetAllCustomers $getAllCustomersUseCase,
-        private GetCustomerById $getCustomerByIdUseCase
+        private GetCustomerById $getCustomerByIdUseCase,
+        private HttpResponse $httpResponse
     ) {}
 
     public function index(): JsonResponse
     {
-        return $this->paginatedResponse($this->getAllCustomersUseCase->execute());
+        return $this->httpResponse->paginated($this->getAllCustomersUseCase->execute());
     }
 
     public function show(int $id): JsonResponse
     {
-        $customer = $this->getCustomerByIdUseCase->execute($id);
-
-        if (!$customer) {
-            return $this->errorResponse(['Customer not found'], 404);
-        }
-
-        return $this->successResponse(data: $customer);
+        return $this->httpResponse->data($this->getCustomerByIdUseCase->execute($id));
     }
 }
