@@ -27,6 +27,27 @@ class CustomerRepository implements CustomerRepositoryInterface
         return $customer ? $this->toEntity($customer) : null;
     }
 
+    public function findByEmail(string $email): ?CustomerEntity
+    {
+        $customer = $this->customerModel->where('email', $email)->first();
+
+        return $customer ? $this->toEntity($customer) : null;
+    }
+
+    public function findByCpf(string $cpf): ?CustomerEntity
+    {
+        $customer = $this->customerModel->where('cpf', $cpf)->first();
+
+        return $customer ? $this->toEntity($customer) : null;
+    }
+
+    public function create(array $data): CustomerEntity
+    {
+        $customer = $this->customerModel->create($data);
+
+        return $this->toEntity($customer);
+    }
+
     public function toEntity(Model $customer): CustomerEntity
     {
         return new CustomerEntity(
