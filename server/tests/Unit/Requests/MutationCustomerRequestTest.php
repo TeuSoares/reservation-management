@@ -1,9 +1,7 @@
 <?php
 
 use App\Http\Requests\Customer\MutationCustomerRequest;
-use App\Infrastructure\Persistence\Models\Customer;
 use Illuminate\Support\Facades\Validator;
-use Mockery\MockInterface;
 
 it('validates required fields for POST requests', function () {
     $data = [
