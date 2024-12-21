@@ -1,18 +1,18 @@
 <?php
 
 use App\Http\Middleware\CheckPermission;
-use App\Infrastructure\Persistence\Repositories\VerifiedCodeRepository;
+use App\Infrastructure\Persistence\Repositories\VerificationCodeRepository;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Mockery\MockInterface;
 
 beforeEach(function () {
-    $mockVerifiedCodeRepository = $this->mock(VerifiedCodeRepository::class, function (MockInterface $mock) {
+    $mockVerificationCodeRepository = $this->mock(VerificationCodeRepository::class, function (MockInterface $mock) {
         $mock->shouldReceive('checkVerifiedCode')
             ->andReturn(true);
     });
 
-    $this->checkPermissionMiddleware = new CheckPermission($mockVerifiedCodeRepository);
+    $this->checkPermissionMiddleware = new CheckPermission($mockVerificationCodeRepository);
 
     $this->request = new Request();
     $this->next = function () {
@@ -39,13 +39,13 @@ test('it should return 403 if verification code is not valid', function () {
     $request->cookies->set('verification_code', 123456);
     $request->cookies->set('customer_id', 1);
 
-    $mockVerifiedCodeRepository = $this->mock(VerifiedCodeRepository::class, function (MockInterface $mock) {
+    $mockVerificationCodeRepository = $this->mock(VerificationCodeRepository::class, function (MockInterface $mock) {
         $mock->shouldReceive('checkVerifiedCode')
             ->once()
             ->andReturn(false);
     });
 
-    $checkPermissionMiddleware = new CheckPermission($mockVerifiedCodeRepository);
+    $checkPermissionMiddleware = new CheckPermission($mockVerificationCodeRepository);
 
     $response = $checkPermissionMiddleware->handle($request, $this->next);
 

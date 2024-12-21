@@ -2,7 +2,7 @@
 
 use App\Infrastructure\Persistence\Models\Customer;
 use App\Infrastructure\Persistence\Models\User;
-use App\Infrastructure\Persistence\Models\VerifiedCode;
+use App\Infrastructure\Persistence\Models\verificationCode;
 use Laravel\Sanctum\Sanctum;
 
 beforeEach(function () {
@@ -44,7 +44,7 @@ test('it should list all customers', function () {
 test('it should list one customer by id', function () {
     $customer = Customer::newFactory()->create();
 
-    $verifiedCode = VerifiedCode::newFactory()->create([
+    $verificationCode = VerificationCode::newFactory()->create([
         'customer_id' => $customer->id,
         'code' => '123456',
         'verified' => true,
@@ -52,7 +52,7 @@ test('it should list one customer by id', function () {
     ]);
 
     $this->withCookies([
-        'verification_code' => $verifiedCode->code,
+        'verification_code' => $verificationCode->code,
         'customer_id' => $customer->id
     ]);
 
@@ -76,7 +76,7 @@ test('it should list one customer by id', function () {
 test('it should return 404 when customer not found', function () {
     $customer = Customer::newFactory()->create();
 
-    $verifiedCode = VerifiedCode::newFactory()->create([
+    $verificationCode = VerificationCode::newFactory()->create([
         'customer_id' => $customer->id,
         'code' => '254987',
         'verified' => true,
@@ -84,7 +84,7 @@ test('it should return 404 when customer not found', function () {
     ]);
 
     $this->withCookies([
-        'verification_code' => $verifiedCode->code,
+        'verification_code' => $verificationCode->code,
         'customer_id' => 1
     ]);
 
