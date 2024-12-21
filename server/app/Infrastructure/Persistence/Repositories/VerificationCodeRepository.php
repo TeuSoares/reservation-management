@@ -3,14 +3,14 @@
 namespace App\Infrastructure\Persistence\Repositories;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Core\Contracts\Repositories\VerifiedCodeRepositoryInterface;
-use App\Core\Domain\Entities\VerifiedCode as VerifiedCodeEntity;
-use App\Infrastructure\Persistence\Models\VerifiedCode;
+use App\Core\Contracts\Repositories\VerificationCodeRepositoryInterface;
+use App\Core\Domain\Entities\VerificationCode;
+use App\Infrastructure\Persistence\Models\VerificationCode as VerificationCodeModel;
 use Carbon\Carbon;
 
-class VerifiedCodeRepository implements VerifiedCodeRepositoryInterface
+class VerificationCodeRepository implements VerificationCodeRepositoryInterface
 {
-    public function __construct(private VerifiedCode $model) {}
+    public function __construct(private VerificationCodeModel $model) {}
 
     public function findByNotVerifiedCode(int $code, int $customerId): ?int
     {
@@ -36,14 +36,16 @@ class VerifiedCodeRepository implements VerifiedCodeRepositoryInterface
         return $verifiedCode ? true : false;
     }
 
-    public function create(int $customerId): void
+    public function create(int $customerId): VerificationCode
     {
-        $this->model->create([
+        $row = $this->model->create([
             'code' => rand(100000, 999999),
             'customer_id' => $customerId,
             'verified' => false,
             'expired' => false,
         ]);
+
+        return $this->toEntity($row);
     }
 
     public function update(int $code, int $customerId): void
@@ -58,9 +60,9 @@ class VerifiedCodeRepository implements VerifiedCodeRepositoryInterface
             ]);
     }
 
-    public function toEntity(Model $model): VerifiedCodeEntity
+    public function toEntity(Model $model): VerificationCode
     {
-        return new VerifiedCodeEntity(
+        return new VerificationCode(
             $model->id,
             $model->code,
             $model->customer_id,

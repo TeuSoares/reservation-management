@@ -2,11 +2,11 @@
 
 namespace App\Infrastructure\Persistence\Models;
 
-use Database\Factories\VerifiedCodeFactory;
+use Database\Factories\VerificationCodeFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class VerifiedCode extends Model
+class VerificationCode extends Model
 {
     use HasFactory;
 
@@ -24,8 +24,8 @@ class VerifiedCode extends Model
         ];
     }
 
-    protected static function newFactory(): VerifiedCodeFactory
+    protected static function newFactory(): VerificationCodeFactory
     {
-        return VerifiedCodeFactory::new();
+        return VerificationCodeFactory::new();
     }
 }

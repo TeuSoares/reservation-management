@@ -5,7 +5,7 @@ namespace App\Core\Domain\Entities;
 use App\Core\Contracts\EntityInterface;
 use Illuminate\Support\Carbon;
 
-class VerifiedCode implements EntityInterface
+class VerificationCode implements EntityInterface
 {
     public function __construct(
         public int $id,

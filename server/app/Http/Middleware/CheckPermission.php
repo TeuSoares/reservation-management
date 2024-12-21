@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Core\Contracts\Repositories\VerifiedCodeRepositoryInterface;
+use App\Core\Contracts\Repositories\VerificationCodeRepositoryInterface;
 use App\Support\HttpResponse;
 use Closure;
 use Illuminate\Http\Request;
@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CheckPermission
 {
-    public function __construct(private VerifiedCodeRepositoryInterface $verifiedCodeRepository) {}
+    public function __construct(private VerificationCodeRepositoryInterface $verifiedCodeRepository) {}
 
     /**
      * Handle an incoming request.

@@ -2,15 +2,15 @@
 
 namespace Database\Factories;
 
-use App\Infrastructure\Persistence\Models\VerifiedCode;
+use App\Infrastructure\Persistence\Models\VerificationCode;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Infrastructure\Persistence\Models\VerifiedCode>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Infrastructure\Persistence\Models\VerificationCode>
  */
-class VerifiedCodeFactory extends Factory
+class VerificationCodeFactory extends Factory
 {
-    protected $model = VerifiedCode::class;
+    protected $model = VerificationCode::class;
 
     /**
      * Define the model's default state.
