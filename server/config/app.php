@@ -123,4 +123,15 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Custom variables
+    |--------------------------------------------------------------------------
+    |
+    | These variables are available for use in your application.
+    |
+    */
+
+    'front_url' => env('FRONT_URL', 'http://localhost:3000'),
+
 ];
