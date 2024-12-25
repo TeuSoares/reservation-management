@@ -2,9 +2,8 @@
 
 namespace App\Core\UseCases\Customer;
 
-use App\Core\Contracts\Mails\SendVerificationCodeMailInterface;
 use App\Core\Contracts\Repositories\CustomerRepositoryInterface;
-use App\Core\Contracts\Repositories\VerificationCodeRepositoryInterface;
+use App\Core\services\VerificationCodeService;
 use App\Support\Traits\ThrowException;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,22 +13,17 @@ class CreateCustomerUseCase
 
     public function __construct(
         private CustomerRepositoryInterface $customerRepository,
-        private VerificationCodeRepositoryInterface $verifiedCodeRepository,
-        private SendVerificationCodeMailInterface $notifier
+        private VerificationCodeService $verifiedCodeService
     ) {}
 
-    public function execute(array $data): string
+    public function execute(array $data): int
     {
-        $message = 'Customer created successfully';
-
         $customer = $this->customerRepository->create($data);
 
-        if (Auth::user()) return $message;
+        if (Auth::user()) return $customer->id;
 
-        $verifiedCode = $this->verifiedCodeRepository->create($customer->id);
+        $this->verifiedCodeService->handleVerification($customer->id, $customer->email);
 
-        $this->notifier->send($customer->email, $verifiedCode->code);
-
-        return $message;
+        return $customer->id;
     }
 }
