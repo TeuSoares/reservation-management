@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Core\UseCases\Customer\CheckRecordUseCase;
 use App\Core\UseCases\Customer\CreateCustomerUseCase;
 use App\Core\UseCases\Customer\GetAllCustomers;
 use App\Core\UseCases\Customer\GetCustomerById;
+use App\Http\Requests\Customer\CheckRecordRequest;
 use App\Http\Requests\Customer\MutationCustomerRequest;
 use App\Support\HttpResponse;
 use Illuminate\Http\JsonResponse;
@@ -15,6 +17,7 @@ class CustomerController extends Controller
         private GetAllCustomers $getAllCustomersUseCase,
         private GetCustomerById $getCustomerByIdUseCase,
         private CreateCustomerUseCase $createCustomerUseCase,
+        private CheckRecordUseCase $checkRecordUseCase,
         private HttpResponse $httpResponse
     ) {}
 
@@ -30,7 +33,18 @@ class CustomerController extends Controller
 
     public function store(MutationCustomerRequest $request): JsonResponse
     {
-        $message = $this->createCustomerUseCase->execute($request->all());
-        return $this->httpResponse->message($message, 201);
+        $this->createCustomerUseCase->execute($request->all());
+        return $this->httpResponse->message('Customer created successfully', 201);
+    }
+
+    public function checkRecord(CheckRecordRequest $request): JsonResponse
+    {
+        $customer_id = $this->checkRecordUseCase->execute($request->input('cpf'));
+        return $this->httpResponse->message('The customer exists', 200, ['customer_id' => $customer_id]);
+    }
+
+    public function checkCode(): JsonResponse
+    {
+        return $this->httpResponse->data([]);
     }
 }
