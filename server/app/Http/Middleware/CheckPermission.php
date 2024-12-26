@@ -19,15 +19,10 @@ class CheckPermission
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $allowedOrigin = 'http://localhost';
-        $origin = $request->headers->get('origin');
-
-        if ($origin !== $allowedOrigin) return HttpResponse::error(['origin' => 'Unauthorized origin'], 403);
-
         if ($request->user()) return $next($request);
 
         $verificationCode = $request->cookie('verification_code');
-        $customer_id = $request->cookie('customer_id');
+        $customer_id = $request->id;
 
         if (!$verificationCode || !$customer_id) return HttpResponse::error(['verification_code' => 'Invalid verification code'], 401);
 

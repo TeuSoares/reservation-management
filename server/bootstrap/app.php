@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\CheckOrigin;
 use App\Http\Middleware\CheckPermission;
 use App\Support\HttpResponse;
 use Illuminate\Database\QueryException;
@@ -19,7 +20,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->statefulApi();
 
         $middleware->alias([
-            'check.permission' => CheckPermission::class
+            'check.permission' => CheckPermission::class,
+            'check.origin' => CheckOrigin::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

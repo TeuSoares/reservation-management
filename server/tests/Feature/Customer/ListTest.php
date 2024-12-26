@@ -53,7 +53,6 @@ test('it should list one customer by id', function () {
 
     $this->withCookies([
         'verification_code' => $verificationCode->code,
-        'customer_id' => $customer->id
     ]);
 
     $response = $this->get(route('customers.show', ['id' => $customer->id]), [
@@ -74,19 +73,9 @@ test('it should list one customer by id', function () {
 });
 
 test('it should return 404 when customer not found', function () {
-    $customer = Customer::newFactory()->create();
+    $user = User::newFactory()->create();
 
-    $verificationCode = VerificationCode::newFactory()->create([
-        'customer_id' => $customer->id,
-        'code' => '254987',
-        'verified' => true,
-        'expired' => false
-    ]);
-
-    $this->withCookies([
-        'verification_code' => $verificationCode->code,
-        'customer_id' => 1
-    ]);
+    Sanctum::actingAs($user);
 
     $response = $this->get(route('customers.show', ['id' => 3]), [
         'Accept' => 'application/json'

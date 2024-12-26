@@ -5,6 +5,12 @@ use App\Infrastructure\Persistence\Models\User;
 use Illuminate\Support\Facades\Mail;
 use Laravel\Sanctum\Sanctum;
 
+beforeEach(function () {
+    $this->withHeaders([
+        'Origin' => 'http://localhost',
+    ]);
+});
+
 test('it should create a new customer successfully and send email with verification code', function () {
     $customer = [
         'name' => 'John Doe',
