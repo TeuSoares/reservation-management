@@ -1,5 +1,6 @@
 <?php
 
+use App\Core\Domain\Entities\Customer;
 use App\Http\Middleware\CheckPermission;
 use App\Infrastructure\Persistence\Repositories\VerificationCodeRepository;
 use Illuminate\Http\Request;
@@ -7,9 +8,11 @@ use Illuminate\Http\Response;
 use Mockery\MockInterface;
 
 beforeEach(function () {
-    $mockVerificationCodeRepository = $this->mock(VerificationCodeRepository::class, function (MockInterface $mock) {
-        $mock->shouldReceive('checkVerifiedCode')
-            ->andReturn(true);
+    $customerEntity = $this->mock(Customer::class);
+
+    $mockVerificationCodeRepository = $this->mock(VerificationCodeRepository::class, function (MockInterface $mock) use ($customerEntity) {
+        $mock->shouldReceive('findByVerifiedCode')
+            ->andReturn($customerEntity);
     });
 
     $this->checkPermissionMiddleware = new CheckPermission($mockVerificationCodeRepository);
@@ -28,9 +31,9 @@ test('it should return 403 if verification code is not valid', function () {
     $request->id = 1;
 
     $mockVerificationCodeRepository = $this->mock(VerificationCodeRepository::class, function (MockInterface $mock) {
-        $mock->shouldReceive('checkVerifiedCode')
+        $mock->shouldReceive('findByVerifiedCode')
             ->once()
-            ->andReturn(false);
+            ->andReturn(null);
     });
 
     $checkPermissionMiddleware = new CheckPermission($mockVerificationCodeRepository);

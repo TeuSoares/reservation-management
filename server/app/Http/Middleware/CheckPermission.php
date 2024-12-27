@@ -26,7 +26,7 @@ class CheckPermission
 
         if (!$verificationCode || !$customer_id) return HttpResponse::error(['verification_code' => 'Invalid verification code'], 401);
 
-        $verifiedCode = $this->verifiedCodeRepository->checkVerifiedCode($verificationCode, $customer_id);
+        $verifiedCode = $this->verifiedCodeRepository->findByVerifiedCode($verificationCode, $customer_id);
 
         if (!$verifiedCode) return HttpResponse::error(['verification_code' => 'Invalid verification code'], 403);
 
