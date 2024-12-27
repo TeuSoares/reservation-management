@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Core\UseCases\Customer\CheckCodeUseCase;
 use App\Core\UseCases\Customer\CheckRecordUseCase;
 use App\Core\UseCases\Customer\CreateCustomerUseCase;
 use App\Core\UseCases\Customer\GetAllCustomers;
 use App\Core\UseCases\Customer\GetCustomerById;
+use App\Http\Requests\Customer\CheckCodeRequest;
 use App\Http\Requests\Customer\CheckRecordRequest;
 use App\Http\Requests\Customer\MutationCustomerRequest;
 use App\Support\HttpResponse;
@@ -18,6 +20,7 @@ class CustomerController extends Controller
         private GetCustomerById $getCustomerByIdUseCase,
         private CreateCustomerUseCase $createCustomerUseCase,
         private CheckRecordUseCase $checkRecordUseCase,
+        private CheckCodeUseCase $checkCodeUseCase,
         private HttpResponse $httpResponse
     ) {}
 
@@ -43,8 +46,9 @@ class CustomerController extends Controller
         return $this->httpResponse->message('The customer exists', 200, ['customer_id' => $customer_id]);
     }
 
-    public function checkCode(): JsonResponse
+    public function checkCode(CheckCodeRequest $request): JsonResponse
     {
-        return $this->httpResponse->data([]);
+        $code = $this->checkCodeUseCase->execute($request->input('code'), $request->input('id'));
+        return $this->httpResponse->message('The code is valid', 200, ['code' => $code]);
     }
 }
