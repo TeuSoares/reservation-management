@@ -14,6 +14,10 @@ class VerificationCodeService
 
     public function handleVerification(int $customer_id, string $email): void
     {
+        $code = $this->verifiedCodeRepository->findByNotExpiredCode($customer_id);
+
+        if ($code) $this->verifiedCodeRepository->delete($code->id);
+
         $verifiedCode = $this->verifiedCodeRepository->create($customer_id);
         $this->notifier->send($email, $verifiedCode->code);
     }
