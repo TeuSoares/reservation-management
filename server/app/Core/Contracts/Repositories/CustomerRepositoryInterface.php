@@ -11,4 +11,6 @@ interface CustomerRepositoryInterface extends RepositoryInterface
     public function findByEmail(string $email): ?Customer;
     public function findByCpf(string $cpf): ?Customer;
     public function create(array $data): Customer;
+    public function update(array $data, int $id): void;
+    public function delete(int $id): void;
 }

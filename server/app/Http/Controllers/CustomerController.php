@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Core\UseCases\Customer\CheckCodeUseCase;
 use App\Core\UseCases\Customer\CheckRecordUseCase;
 use App\Core\UseCases\Customer\CreateCustomerUseCase;
+use App\Core\UseCases\Customer\DeleteCustomerUseCase;
 use App\Core\UseCases\Customer\GetAllCustomers;
 use App\Core\UseCases\Customer\GetCustomerById;
+use App\Core\UseCases\Customer\UpdateCustomerUseCase;
 use App\Http\Requests\Customer\CheckCodeRequest;
 use App\Http\Requests\Customer\CheckRecordRequest;
 use App\Http\Requests\Customer\MutationCustomerRequest;
@@ -16,12 +18,14 @@ use Illuminate\Http\JsonResponse;
 class CustomerController extends Controller
 {
     public function __construct(
+        private HttpResponse $httpResponse,
         private GetAllCustomers $getAllCustomersUseCase,
         private GetCustomerById $getCustomerByIdUseCase,
         private CreateCustomerUseCase $createCustomerUseCase,
         private CheckRecordUseCase $checkRecordUseCase,
         private CheckCodeUseCase $checkCodeUseCase,
-        private HttpResponse $httpResponse
+        private DeleteCustomerUseCase $deleteCustomerUseCase,
+        private UpdateCustomerUseCase $updateCustomerUseCase
     ) {}
 
     public function index(): JsonResponse
@@ -38,6 +42,18 @@ class CustomerController extends Controller
     {
         $this->createCustomerUseCase->execute($request->all());
         return $this->httpResponse->message('Customer created successfully', 201);
+    }
+
+    public function update(MutationCustomerRequest $request, int $id): JsonResponse
+    {
+        $this->updateCustomerUseCase->execute($request->all(), $id);
+        return $this->httpResponse->message('Customer updated successfully', 200);
+    }
+
+    public function destroy(int $id): JsonResponse
+    {
+        $this->deleteCustomerUseCase->execute($id);
+        return $this->httpResponse->message('Customer deleted successfully', 200);
     }
 
     public function checkRecord(CheckRecordRequest $request): JsonResponse
