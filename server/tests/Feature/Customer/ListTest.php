@@ -51,8 +51,8 @@ test('it should list one customer by id', function () {
         'expired' => false
     ]);
 
-    $this->withCookies([
-        'verification_code' => $verificationCode->code,
+    $this->withHeaders([
+        'X-Verification-Code' => $verificationCode->code,
     ]);
 
     $response = $this->get(route('customers.show', ['id' => $customer->id]), [

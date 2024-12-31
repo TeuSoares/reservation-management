@@ -21,7 +21,7 @@ class CheckPermission
     {
         if ($request->user()) return $next($request);
 
-        $verificationCode = $request->cookie('verification_code');
+        $verificationCode = $request->header('X-Verification-Code');
         $customer_id = $request->id;
 
         if (!$verificationCode || !$customer_id) return HttpResponse::error(['verification_code' => 'Invalid verification code'], 401);

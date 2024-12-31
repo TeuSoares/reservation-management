@@ -27,7 +27,7 @@ test('it should return 403 if verification code is not valid', function () {
     $request = $this->request;
 
     $request->headers->set('origin', 'http://localhost');
-    $request->cookies->set('verification_code', 123456);
+    $request->headers->set('X-Verification-Code', 123456);
     $request->id = 1;
 
     $mockVerificationCodeRepository = $this->mock(VerificationCodeRepository::class, function (MockInterface $mock) {
