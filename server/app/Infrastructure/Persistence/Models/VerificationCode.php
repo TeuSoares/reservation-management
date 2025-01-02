@@ -5,6 +5,7 @@ namespace App\Infrastructure\Persistence\Models;
 use Database\Factories\VerificationCodeFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class VerificationCode extends Model
 {
@@ -27,5 +28,10 @@ class VerificationCode extends Model
     protected static function newFactory(): VerificationCodeFactory
     {
         return VerificationCodeFactory::new();
+    }
+
+    public function customer(): BelongsTo
+    {
+        return $this->belongsTo(Customer::class);
     }
 }
