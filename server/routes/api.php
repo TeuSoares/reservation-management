@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\ReservationController;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
@@ -21,4 +22,10 @@ Route::group([
             Route::put('{id}', [CustomerController::class, 'update'])->name('customers.update');
         });
     });
+
+    Route::post('reservations', [ReservationController::class, 'store'])->middleware('check.permission')->name('reservations.store');
+    Route::apiResource('reservations', ReservationController::class)
+        ->middleware('auth:sanctum')
+        ->parameters(['reservations' => 'id'])
+        ->except('store');
 });
