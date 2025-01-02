@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Core\Contracts\Repositories\ReservationRepositoryInterface;
+use App\Infrastructure\Persistence\Repositories\ReservationRepository;
+
 use App\Core\Contracts\Mails\SendVerificationCodeMailInterface;
 use Illuminate\Support\ServiceProvider;
 use App\Core\Contracts\Repositories\CustomerRepositoryInterface;
@@ -17,6 +20,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+		$this->app->bind(ReservationRepositoryInterface::class, ReservationRepository::class);
         $this->app->bind(VerificationCodeRepositoryInterface::class, VerificationCodeRepository::class);
         $this->app->bind(CustomerRepositoryInterface::class, CustomerRepository::class);
         $this->app->bind(SendVerificationCodeMailInterface::class, SendVerificationCodeMail::class);
