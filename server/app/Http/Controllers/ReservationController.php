@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\Core\UseCases\Reservation\GetAllReservationUseCase;
 use App\Core\UseCases\Reservation\GetReservationByIdUseCase;
 use App\Core\UseCases\Reservation\StoreReservationUseCase;
+use App\Core\UseCases\Reservation\UpdateReservationUseCase;
 use App\Http\Requests\Reservation\MutationReservationRequest;
 use App\Http\Requests\Reservation\ReservationFilterRequest;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use App\Support\HttpResponse;
 
 class ReservationController extends Controller
@@ -17,7 +17,8 @@ class ReservationController extends Controller
         private HttpResponse $httpResponse,
         private GetAllReservationUseCase $getAllReservationUseCase,
         private GetReservationByIdUseCase $getReservationByIdUseCase,
-        private StoreReservationUseCase $storeReservationUseCase
+        private StoreReservationUseCase $storeReservationUseCase,
+        private UpdateReservationUseCase $updateReservationUseCase
     ) {}
 
     public function index(ReservationFilterRequest $request): JsonResponse
@@ -36,9 +37,10 @@ class ReservationController extends Controller
         return $this->httpResponse->message('The reservation was created successfully', 201);
     }
 
-    public function update(Request $request): JsonResponse
+    public function update(MutationReservationRequest $request, int $id): JsonResponse
     {
-        return $this->httpResponse->message('');
+        $this->updateReservationUseCase->execute($id, $request->all());
+        return $this->httpResponse->message('The reservation was updated successfully', 200);
     }
 
     public function destroy(int $id): JsonResponse
