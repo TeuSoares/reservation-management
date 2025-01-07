@@ -19,6 +19,11 @@ class Reservation extends Model
         'canceled',
     ];
 
+    protected $attributes = [
+        'payment_confirmed' => false,
+        'canceled' => false,
+    ];
+
     protected static function newFactory(): ReservationFactory
     {
         return ReservationFactory::new();
