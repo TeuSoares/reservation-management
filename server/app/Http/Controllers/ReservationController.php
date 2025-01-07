@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Core\UseCases\Reservation\GetAllReservationUseCase;
 use App\Core\UseCases\Reservation\GetReservationByIdUseCase;
+use App\Core\UseCases\Reservation\StoreReservationUseCase;
+use App\Http\Requests\Reservation\MutationReservationRequest;
 use App\Http\Requests\Reservation\ReservationFilterRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -14,7 +16,8 @@ class ReservationController extends Controller
     public function __construct(
         private HttpResponse $httpResponse,
         private GetAllReservationUseCase $getAllReservationUseCase,
-        private GetReservationByIdUseCase $getReservationByIdUseCase
+        private GetReservationByIdUseCase $getReservationByIdUseCase,
+        private StoreReservationUseCase $storeReservationUseCase
     ) {}
 
     public function index(ReservationFilterRequest $request): JsonResponse
@@ -27,9 +30,10 @@ class ReservationController extends Controller
         return $this->httpResponse->data($this->getReservationByIdUseCase->execute($id));
     }
 
-    public function store(Request $request): JsonResponse
+    public function store(MutationReservationRequest $request): JsonResponse
     {
-        return $this->httpResponse->message('');
+        $this->storeReservationUseCase->execute($request->all());
+        return $this->httpResponse->message('The reservation was created successfully', 201);
     }
 
     public function update(Request $request): JsonResponse
