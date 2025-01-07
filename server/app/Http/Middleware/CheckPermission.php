@@ -22,13 +22,20 @@ class CheckPermission
         if ($request->user()) return $next($request);
 
         $verificationCode = $request->header('X-Verification-Code');
-        $customer_id = $request->id;
+        $customer_id = $request->id ?? $request->customer_id;
 
         if (!$verificationCode || !$customer_id) return HttpResponse::error(['verification_code' => 'Invalid verification code'], 401);
 
         $verifiedCode = $this->verifiedCodeRepository->findByVerifiedCode($verificationCode, $customer_id);
 
         if (!$verifiedCode) return HttpResponse::error(['verification_code' => 'Invalid verification code'], 403);
+
+        $request->merge([
+            'verification_code' => [
+                'id' => $verifiedCode->id,
+                'code' => $verifiedCode->code
+            ]
+        ]);
 
         return $next($request);
     }
