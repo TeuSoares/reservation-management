@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Core\UseCases\Reservation\DeleteReservationUseCase;
 use App\Core\UseCases\Reservation\GetAllReservationUseCase;
 use App\Core\UseCases\Reservation\GetReservationByIdUseCase;
 use App\Core\UseCases\Reservation\StoreReservationUseCase;
@@ -18,7 +19,8 @@ class ReservationController extends Controller
         private GetAllReservationUseCase $getAllReservationUseCase,
         private GetReservationByIdUseCase $getReservationByIdUseCase,
         private StoreReservationUseCase $storeReservationUseCase,
-        private UpdateReservationUseCase $updateReservationUseCase
+        private UpdateReservationUseCase $updateReservationUseCase,
+        private DeleteReservationUseCase $deleteReservationUseCase
     ) {}
 
     public function index(ReservationFilterRequest $request): JsonResponse
@@ -45,6 +47,7 @@ class ReservationController extends Controller
 
     public function destroy(int $id): JsonResponse
     {
-        return $this->httpResponse->message('');
+        $this->deleteReservationUseCase->execute($id);
+        return $this->httpResponse->message('The reservation was deleted successfully', 200);
     }
 }
