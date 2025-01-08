@@ -19,7 +19,8 @@ test('it should update a reservation successfully', function () {
     $data = [
         'customer_id' => $reservation->customer_id,
         'booking_date' => Carbon::now()->addDays(1)->format('Y-m-d'),
-        'number_people' => 5
+        'number_people' => 5,
+        'canceled' => false
     ];
 
     $response = $this->putJson(route('reservations.update', ['id' => $reservation->id]), $data);

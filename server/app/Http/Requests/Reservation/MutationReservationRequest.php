@@ -20,6 +20,7 @@ class MutationReservationRequest extends FormRequest
                 '|after_or_equal:' . Carbon::now()->format('Y-m-d') .
                 '|before_or_equal:' . Carbon::now()->addMonths(1)->format('Y-m-d'),
             'number_people' => 'sometimes|required|integer|min:1',
+            'canceled' => 'sometimes|boolean',
         ];
 
         if (request()->isMethod('POST')) {
@@ -41,6 +42,7 @@ class MutationReservationRequest extends FormRequest
             'booking_date.before' => 'The reservation date must be next month at the latest',
             'number_people.integer' => 'Number of people must be an integer',
             'number_people.min' => 'Number of people must be at least 1',
+            'canceled.boolean' => 'Canceled field must be true or false',
         ];
     }
 }
