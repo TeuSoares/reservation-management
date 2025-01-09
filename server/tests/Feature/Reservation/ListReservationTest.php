@@ -28,7 +28,6 @@ test('it should list all reservations', function () {
                     'customer_id',
                     'booking_date',
                     'number_people',
-                    'payment_confirmed',
                     'canceled'
                 ]
             ],
@@ -65,7 +64,6 @@ test('it should list one reservation by id', function () {
                 'customer_id',
                 'booking_date',
                 'number_people',
-                'payment_confirmed',
                 'canceled'
             ]
         ]);

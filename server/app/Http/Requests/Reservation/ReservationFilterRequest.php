@@ -17,7 +17,6 @@ class ReservationFilterRequest extends FormRequest
             'id' => 'nullable|integer|exists:reservations,id',
             'customer_id' => 'nullable|integer|exists:customers,id',
             'booking_date' => 'nullable|date',
-            'payment_confirmed' => 'nullable|boolean',
             'canceled' => 'nullable|boolean',
         ];
     }
@@ -28,7 +27,6 @@ class ReservationFilterRequest extends FormRequest
             'id.exists' => 'The selected reservation does not exist.',
             'customer_id.exists' => 'The selected customer does not exist.',
             'booking_date.date' => 'The booking date must be a valid date.',
-            'payment_confirmed.boolean' => 'The payment confirmed field must be true or false.',
             'canceled.boolean' => 'The canceled field must be true or false.',
         ];
     }

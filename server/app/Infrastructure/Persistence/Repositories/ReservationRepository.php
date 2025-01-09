@@ -20,7 +20,6 @@ class ReservationRepository implements ReservationRepositoryInterface
         $id = $params->id ?? null;
         $customer_id = $params->customer_id ?? null;
         $booking_date = $params->booking_date ?? null;
-        $payment_confirmed = $params->payment_confirmed ?? null;
         $canceled = $params->canceled ?? null;
 
         $query = $this->model
@@ -32,9 +31,6 @@ class ReservationRepository implements ReservationRepositoryInterface
             })
             ->when($booking_date, function ($query) use ($booking_date) {
                 $query->whereDate('booking_date', $booking_date);
-            })
-            ->when($payment_confirmed, function ($query) use ($payment_confirmed) {
-                $query->where('payment_confirmed', $payment_confirmed);
             })
             ->when($canceled, function ($query) use ($canceled) {
                 $query->where('canceled', $canceled);
@@ -81,7 +77,6 @@ class ReservationRepository implements ReservationRepositoryInterface
             $model->customer_id,
             Carbon::parse($model->booking_date),
             $model->number_people,
-            $model->payment_confirmed,
             $model->canceled,
             $customerEntity
         );

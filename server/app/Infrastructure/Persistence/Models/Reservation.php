@@ -15,12 +15,10 @@ class Reservation extends Model
         'customer_id',
         'booking_date',
         'number_people',
-        'payment_confirmed',
         'canceled',
     ];
 
     protected $attributes = [
-        'payment_confirmed' => false,
         'canceled' => false,
     ];
 

@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignId('customer_id')->constrained()->onDelete('cascade');
             $table->dateTime('booking_date');
             $table->unsignedInteger('number_people');
-            $table->boolean('payment_confirmed')->default(false);
             $table->boolean('canceled')->default(false);
             $table->timestamps();
         });

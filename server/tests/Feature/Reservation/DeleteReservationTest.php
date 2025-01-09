@@ -20,7 +20,6 @@ test('it should delete a reservation successfully', function () {
         'customer_id' => $customer->id,
         'number_people' => 2,
         'booking_date' => Carbon::now()->subDays(20)->format('Y-m-d'),
-        'payment_confirmed' => true,
         'canceled' => true
     ]);
 
@@ -41,7 +40,6 @@ test('it should not delete a reservation if it is not canceled', function () {
         'customer_id' => $customer->id,
         'number_people' => 2,
         'booking_date' => Carbon::now()->addDays(20)->format('Y-m-d'),
-        'payment_confirmed' => true,
         'canceled' => false
     ]);
 
@@ -63,7 +61,6 @@ test('it should not delete a reservation if booking date is bigger than today', 
         'customer_id' => $customer->id,
         'number_people' => 2,
         'booking_date' => Carbon::now()->addDays(20)->format('Y-m-d'),
-        'payment_confirmed' => true,
         'canceled' => false
     ]);
 

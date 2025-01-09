@@ -19,7 +19,6 @@ class ReservationFactory extends Factory
             'customer_id' => Customer::newFactory(),
             'booking_date' => fake()->dateTime(),
             'number_people' => fake()->numberBetween(1, 10),
-            'payment_confirmed' => fake()->boolean(),
             'canceled' => fake()->boolean(),
         ];
     }
