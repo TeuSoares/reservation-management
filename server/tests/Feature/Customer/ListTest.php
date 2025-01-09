@@ -5,12 +5,6 @@ use App\Infrastructure\Persistence\Models\User;
 use App\Infrastructure\Persistence\Models\verificationCode;
 use Laravel\Sanctum\Sanctum;
 
-beforeEach(function () {
-    $this->withHeaders([
-        'Origin' => 'http://localhost',
-    ]);
-});
-
 test('it should list all customers', function () {
     $user = User::newFactory()->create();
 

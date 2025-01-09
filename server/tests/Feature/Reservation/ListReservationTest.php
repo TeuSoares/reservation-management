@@ -4,15 +4,8 @@ use App\Infrastructure\Persistence\Models\Reservation;
 use App\Infrastructure\Persistence\Models\User;
 use Laravel\Sanctum\Sanctum;
 
-beforeEach(function () {
-    $this->withHeaders([
-        'Origin' => 'http://localhost',
-    ]);
-});
-
 test('it should list all reservations', function () {
-    $user = User::newFactory()->create();
-    Sanctum::actingAs($user);
+    Sanctum::actingAs(User::newFactory()->create());
 
     Reservation::newFactory()->count(10)->create();
 
@@ -50,8 +43,7 @@ test('it should fail to list reservations if user is not authenticated', functio
 });
 
 test('it should list one reservation by id', function () {
-    $user = User::newFactory()->create();
-    Sanctum::actingAs($user);
+    Sanctum::actingAs(User::newFactory()->create());
 
     $reservation = Reservation::newFactory()->create();
 
@@ -70,8 +62,7 @@ test('it should list one reservation by id', function () {
 });
 
 test('it should return 404 when reservation not found', function () {
-    $user = User::newFactory()->create();
-    Sanctum::actingAs($user);
+    Sanctum::actingAs(User::newFactory()->create());
 
     $response = $this->getJson(route('reservations.show', ['id' => 3]));
 

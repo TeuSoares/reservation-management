@@ -6,12 +6,6 @@ use App\Infrastructure\Persistence\Models\User;
 use Carbon\Carbon;
 use Laravel\Sanctum\Sanctum;
 
-beforeEach(function () {
-    $this->withHeaders([
-        'Origin' => 'http://localhost'
-    ]);
-});
-
 test('it should delete a reservation successfully', function () {
     Sanctum::actingAs(User::newFactory()->create());
 

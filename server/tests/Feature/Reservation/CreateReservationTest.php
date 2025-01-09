@@ -7,27 +7,23 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 
 beforeEach(function () {
-    $this->withHeaders([
-        'Origin' => 'http://localhost',
-    ]);
-});
+    $this->customer = Customer::newFactory()->create();
 
-test('it should create a reservation successfully and send email', function () {
-    $customer = Customer::newFactory()->create();
-
-    $verificationCode = VerificationCode::newFactory()->create([
-        'customer_id' => $customer->id,
+    $this->verificationCode = VerificationCode::newFactory()->create([
+        'customer_id' => $this->customer->id,
         'code' => '123456',
         'verified' => true,
         'expired' => false
     ]);
 
     $this->withHeaders([
-        'X-Verification-Code' => $verificationCode->code,
+        'X-Verification-Code' => $this->verificationCode->code,
     ]);
+});
 
+test('it should create a reservation successfully and send email', function () {
     $data = [
-        'customer_id' => $customer->id,
+        'customer_id' => $this->customer->id,
         'booking_date' => Carbon::now()->format('Y-m-d'),
         'number_people' => 2
     ];
@@ -44,29 +40,19 @@ test('it should create a reservation successfully and send email', function () {
 
     $this->assertDatabaseHas('reservations', $data);
     $this->assertDatabaseHas('verification_codes', [
-        'id' => $verificationCode->id,
-        'customer_id' => $customer->id,
-        'code' => $verificationCode->code,
+        'id' => $this->verificationCode->id,
+        'customer_id' => $this->customer->id,
+        'code' => $this->verificationCode->code,
         'expired' => true
     ]);
 });
 
 test('it should not create a reservation if the verification code is expired', function () {
-    $customer = Customer::newFactory()->create();
-
-    $verificationCode = VerificationCode::newFactory()->create([
-        'customer_id' => $customer->id,
-        'code' => '123456',
-        'verified' => true,
-        'expired' => true
-    ]);
-
-    $this->withHeaders([
-        'X-Verification-Code' => $verificationCode->code,
-    ]);
+    $this->verificationCode->expired = true;
+    $this->verificationCode->save();
 
     $data = [
-        'customer_id' => $customer->id,
+        'customer_id' => $this->customer->id,
         'booking_date' => '2025-01-03',
         'number_people' => 2
     ];
@@ -81,21 +67,8 @@ test('it should not create a reservation if the verification code is expired', f
 });
 
 test('it should not create a reservation if the booking date is in the past', function () {
-    $customer = Customer::newFactory()->create();
-
-    $verificationCode = VerificationCode::newFactory()->create([
-        'customer_id' => $customer->id,
-        'code' => '123456',
-        'verified' => true,
-        'expired' => false
-    ]);
-
-    $this->withHeaders([
-        'X-Verification-Code' => $verificationCode->code,
-    ]);
-
     $data = [
-        'customer_id' => $customer->id,
+        'customer_id' => $this->customer->id,
         'booking_date' => '2025-01-06',
         'number_people' => 2
     ];
@@ -114,21 +87,8 @@ test('it should not create a reservation if the booking date is in the past', fu
 });
 
 test('it should not create a reservation if the number of people is less than 1', function () {
-    $customer = Customer::newFactory()->create();
-
-    $verificationCode = VerificationCode::newFactory()->create([
-        'customer_id' => $customer->id,
-        'code' => '123456',
-        'verified' => true,
-        'expired' => false
-    ]);
-
-    $this->withHeaders([
-        'X-Verification-Code' => $verificationCode->code,
-    ]);
-
     $data = [
-        'customer_id' => $customer->id,
+        'customer_id' => $this->customer->id,
         'booking_date' => Carbon::now()->format('Y-m-d'),
         'number_people' => 0
     ];
@@ -148,21 +108,8 @@ test('it should not create a reservation if the number of people is less than 1'
 });
 
 test('it should not create a reservation if the booking date is after 1 month', function () {
-    $customer = Customer::newFactory()->create();
-
-    $verificationCode = VerificationCode::newFactory()->create([
-        'customer_id' => $customer->id,
-        'code' => '123456',
-        'verified' => true,
-        'expired' => false,
-    ]);
-
-    $this->withHeaders([
-        'X-Verification-Code' => $verificationCode->code,
-    ]);
-
     $data = [
-        'customer_id' => $customer->id,
+        'customer_id' => $this->customer->id,
         'booking_date' => Carbon::now()->addMonths(2)->format('Y-m-d'),
         'number_people' => 5,
     ];

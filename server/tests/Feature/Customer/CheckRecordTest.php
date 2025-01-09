@@ -4,12 +4,6 @@ use App\Core\Domain\Mails\VerificationCodeMail;
 use App\Infrastructure\Persistence\Models\Customer;
 use Illuminate\Support\Facades\Mail;
 
-beforeEach(function () {
-    $this->withHeaders([
-        'Origin' => 'http://localhost',
-    ]);
-});
-
 test('it should return customer id when customer found and send verification code', function () {
     $customer = Customer::factory()->create();
 

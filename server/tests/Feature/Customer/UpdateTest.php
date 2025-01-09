@@ -6,10 +6,6 @@ use App\Infrastructure\Persistence\Models\VerificationCode;
 use Laravel\Sanctum\Sanctum;
 
 beforeEach(function () {
-    $this->withHeaders([
-        'Origin' => 'http://localhost',
-    ]);
-
     $this->customer = Customer::newFactory()->create();
 });
 

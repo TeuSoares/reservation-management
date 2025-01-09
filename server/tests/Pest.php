@@ -15,6 +15,11 @@ pest()->extend(Tests\TestCase::class)
     ->in('Feature', 'Unit');
 
 pest()->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
+    ->beforeEach(function () {
+        $this->withHeaders([
+            'Origin' => 'http://localhost',
+        ]);
+    })
     ->in('Feature');
 
 /*
