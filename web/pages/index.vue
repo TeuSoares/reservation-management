@@ -13,7 +13,11 @@
         </h2>
       </div>
       <div class="flex flex-col gap-4">
-        <BioLink link="/book" icon="uil:calendar-alt" text="Book a Table" />
+        <BioLink
+          link="/reservation/check-register"
+          icon="uil:calendar-alt"
+          text="Book a Table"
+        />
         <BioLink link="#" icon="uil:globe" text="Website" />
         <BioLink link="#" icon="uil:utensils-alt" text="Menu" />
         <BioLink
