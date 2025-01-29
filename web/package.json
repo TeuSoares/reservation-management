@@ -14,7 +14,8 @@
     "@nuxt/ui": "^2.20.0",
     "@nuxtjs/tailwindcss": "^6.12.2",
     "vue": "latest",
-    "vue-router": "latest"
+    "vue-router": "latest",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@iconify-json/uil": "^1.2.3",
