@@ -16,7 +16,7 @@ class CheckOrigin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $allowedOrigin = 'http://localhost';
+        $allowedOrigin = env('FRONT_URL');
         $origin = $request->headers->get('origin');
 
         if ($origin !== $allowedOrigin) return HttpResponse::error(['origin' => 'Unauthorized origin'], 403);
