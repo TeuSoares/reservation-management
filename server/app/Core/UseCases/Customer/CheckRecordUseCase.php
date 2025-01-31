@@ -3,6 +3,7 @@
 namespace App\Core\UseCases\Customer;
 
 use App\Core\Contracts\Repositories\CustomerRepositoryInterface;
+use App\Core\Domain\Entities\Customer;
 use App\Core\services\VerificationCodeService;
 use App\Support\Traits\ThrowException;
 
@@ -15,7 +16,7 @@ class CheckRecordUseCase
         private VerificationCodeService $verifiedCodeService
     ) {}
 
-    public function execute(string $cpf): int
+    public function execute(string $cpf): Customer
     {
         $customer = $this->customerRepository->findByCpf($cpf);
 
@@ -23,6 +24,6 @@ class CheckRecordUseCase
 
         $this->verifiedCodeService->handleVerification($customer->id, $customer->email);
 
-        return $customer->id;
+        return $customer;
     }
 }

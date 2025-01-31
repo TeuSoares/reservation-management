@@ -58,8 +58,8 @@ class CustomerController extends Controller
 
     public function checkRecord(CheckRecordRequest $request): JsonResponse
     {
-        $customer_id = $this->checkRecordUseCase->execute($request->input('cpf'));
-        return $this->httpResponse->message('The customer exists', 200, ['customer_id' => $customer_id]);
+        $data = $this->checkRecordUseCase->execute($request->input('cpf'));
+        return $this->httpResponse->message('The customer exists', 200, $data);
     }
 
     public function checkCode(CheckCodeRequest $request): JsonResponse
