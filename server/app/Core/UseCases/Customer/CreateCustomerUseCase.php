@@ -16,7 +16,7 @@ class CreateCustomerUseCase
         private VerificationCodeService $verifiedCodeService
     ) {}
 
-    public function execute(array $data): int
+    public function execute(array $data): array
     {
         $customer = $this->customerRepository->create($data);
 
@@ -24,6 +24,6 @@ class CreateCustomerUseCase
 
         $this->verifiedCodeService->handleVerification($customer->id, $customer->email);
 
-        return $customer->id;
+        return (array) $customer;
     }
 }

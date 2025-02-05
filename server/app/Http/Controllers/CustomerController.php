@@ -40,8 +40,8 @@ class CustomerController extends Controller
 
     public function store(MutationCustomerRequest $request): JsonResponse
     {
-        $this->createCustomerUseCase->execute($request->all());
-        return $this->httpResponse->message('Customer created successfully', 201);
+        $customer = $this->createCustomerUseCase->execute($request->all());
+        return $this->httpResponse->message('Customer created successfully', 201, $customer);
     }
 
     public function update(MutationCustomerRequest $request, int $id): JsonResponse
