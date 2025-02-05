@@ -48,7 +48,9 @@
         </div>
 
         <template #footer>
-          <UButton type="submit" color="red">Register</UButton>
+          <UButton type="submit" color="red" :loading="loading"
+            >Register</UButton
+          >
         </template>
       </UCard>
     </UForm>
