@@ -66,7 +66,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       }
     );
 
-    customerStore.setCode(response.data);
+    customerStore.setCode(response.data.code);
 
     router.push("/reservation/schedule");
     successMessage(response.message);
