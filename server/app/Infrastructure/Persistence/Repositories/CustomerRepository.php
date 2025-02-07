@@ -48,11 +48,13 @@ class CustomerRepository implements CustomerRepositoryInterface
         return $this->toEntity($customer);
     }
 
-    public function update(array $data, int $id): void
+    public function update(array $data, int $id): CustomerEntity
     {
         $customer = $this->customerModel->findOrFail($id);
 
         $customer->update($data);
+
+        return $this->toEntity($customer);
     }
 
     public function delete(int $id): void

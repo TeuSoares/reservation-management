@@ -46,8 +46,8 @@ class CustomerController extends Controller
 
     public function update(MutationCustomerRequest $request, int $id): JsonResponse
     {
-        $this->updateCustomerUseCase->execute($request->all(), $id);
-        return $this->httpResponse->message('Customer updated successfully', 200);
+        $customer = $this->updateCustomerUseCase->execute($request->all(), $id);
+        return $this->httpResponse->message('Customer updated successfully', 200, $customer);
     }
 
     public function destroy(int $id): JsonResponse
