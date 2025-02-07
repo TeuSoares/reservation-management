@@ -4,7 +4,7 @@ export const useCustomerStore = defineStore("videos", () => {
   const customer = ref<CustomerInterface | null>(null);
   const code = ref<string | null>(null);
 
-  const setCustomer = (data: CustomerInterface) => {
+  const setCustomer = (data: CustomerInterface | null) => {
     customer.value = data;
   };
 
