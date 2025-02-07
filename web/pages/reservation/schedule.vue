@@ -17,7 +17,9 @@
           <div class="flex flex-col gap-2">
             <div class="flex items-center justify-between">
               <h1 class="text-base font-bold text-main">Your data</h1>
-              <UButton color="red" size="xs">Edit</UButton>
+              <UButton color="red" size="xs" to="/reservation/register-customer"
+                >Edit</UButton
+              >
             </div>
 
             <p class="text-sm"><strong>Name:</strong> {{ customer?.name }}</p>
@@ -113,6 +115,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     );
 
     router.push("/reservation/thanks");
+    customerStore.setCustomer(null);
     successMessage(response.message);
   } catch (error: any) {
     const message = extractError(error);

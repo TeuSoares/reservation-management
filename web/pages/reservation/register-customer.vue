@@ -99,32 +99,45 @@ const schema = z.object({
 
 type Schema = z.output<typeof schema>;
 
-const state = reactive({
-  cpf: "",
-  name: "",
-  email: "",
-  phone: "",
-  birth_date: "",
-});
-
 const router = useRouter();
 const config = useRuntimeConfig();
 const { successMessage, errorMessage } = useMessage();
 
 const customerStore = useCustomerStore();
+const { customer, code } = storeToRefs(customerStore);
+
+const state = reactive({
+  name: customer.value?.name ?? "",
+  email: customer.value?.email ?? "",
+  cpf: customer.value?.cpf ? formatCPF(customer.value.cpf) : "",
+  phone: customer.value?.phone ? formatPhoneNumber(customer.value.phone) : "",
+  birth_date: customer.value?.birth_date ?? "",
+});
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   loading.value = true;
 
+  const api_url = customer.value?.id
+    ? `${config.public.API_URL}/customers/${customer.value.id}`
+    : `${config.public.API_URL}/customers`;
+  const method = customer.value?.id ? "PUT" : "POST";
+
   try {
-    const response: any = await $fetch(`${config.public.API_URL}/customers`, {
-      method: "POST",
-      body: event.data,
+    const response: any = await $fetch(api_url, {
+      method,
+      body: {
+        ...event.data,
+        id: customer.value?.id ?? null,
+      },
+      headers: {
+        "X-Verification-Code": code.value ?? "",
+      },
     });
 
+    router.push(
+      customer.value?.id ? "/reservation/schedule" : "/reservation/check-code"
+    );
     customerStore.setCustomer(response.data);
-
-    router.push("/reservation/check-code");
     successMessage(response.message);
   } catch (error: any) {
     const message = extractError(error);
